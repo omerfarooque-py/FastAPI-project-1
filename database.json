@@ -1,0 +1,16 @@
+{
+    "status": "operational",
+    "version": "0.1.0",
+    "tasks": [
+        {
+            "title": "string",
+            "description": "string",
+            "is_completed": false
+        },
+        {
+            "title": "string",
+            "description": "string",
+            "is_completed": false
+        }
+    ]
+}
