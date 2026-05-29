@@ -9,7 +9,7 @@ class DBUser(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     username  = Column(String, unique=True, nullable=False)
     hashed_password = Column(String, nullable=False)
-    tasks = relationship("DBTask", back_populates="users")
+    tasks = relationship("DBTask", back_populates="owner")
 
 
 class DBTask(Base):
@@ -19,5 +19,5 @@ class DBTask(Base):
     title = Column(String, nullable =False)
     description = Column(String, nullable = False)
     is_completed = Column(Boolean, default= False)
-    owner_id = Column(Integer, ForeignKey("users"), nullable=False)
+    owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     owner = relationship("DBUser", back_populates="tasks")

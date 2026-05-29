@@ -42,10 +42,10 @@ def get_db():
         db.close()
 
 
-from fastapi.security import OAuth2AuthorizationCodeBearer
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 
-oauth2_scheme = OAuth2AuthorizationCodeBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 def get_current_user(
         token: str = Depends(oauth2_scheme),
@@ -116,13 +116,13 @@ def create_account(
 
 @app.post("/login/")
 def user_login(
-    user : UserCreate,
+    user_credentials : OAuth2PasswordRequestForm = Depends(),
     db : Session = Depends(get_db)
 ):
-    user_exists = db.query(src.models.DBUser).filter(src.models.DBUser.username == user.username).first()
+    user_exists = db.query(src.models.DBUser).filter(src.models.DBUser.username == user_credentials.username).first()
     
     if user_exists:
-        password_verification = verify_password(user.password, user_exists.hashed_password)
+        password_verification = verify_password(user_credentials.password, user_exists.hashed_password)
         if password_verification:
             token_payload = {"sub" : user_exists.username}
             jwt_token = create_access_token(data=token_payload)
