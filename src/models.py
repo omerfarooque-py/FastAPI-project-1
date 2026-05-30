@@ -19,5 +19,6 @@ class DBTask(Base):
     title = Column(String, nullable =False)
     description = Column(String, nullable = False)
     is_completed = Column(Boolean, default= False)
+    priority = Column(String, default="low", nullable=True)
     owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     owner = relationship("DBUser", back_populates="tasks")
